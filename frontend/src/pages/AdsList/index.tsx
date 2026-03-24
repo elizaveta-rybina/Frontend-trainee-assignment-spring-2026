@@ -18,6 +18,7 @@ import type { ItemCategory } from '@/modules/ads/model/types'
 import { useAds } from '@/modules/ads/query/hooks'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 import { useLayoutStore } from '@/shared/store/layoutStore'
+import * as styles from './styles'
 
 export const AdsList = () => {
 	const view = useLayoutStore(state => state.view)
@@ -90,9 +91,10 @@ export const AdsList = () => {
 	const totalPages = data?.total ? Math.ceil(data.total / limit) : 0
 	const hasItems = Boolean(data?.items?.length)
 	const isEmpty = !isLoading && !isError && data?.items && !hasItems
+	const isGridView = view === 'grid'
 
 	return (
-		<Container maxWidth='xl' sx={{ py: 4 }}>
+		<Container maxWidth='xl' sx={styles.pageSx}>
 			<AdsControlPanel
 				total={data?.total || 0}
 				searchValue={searchInput}
@@ -101,14 +103,8 @@ export const AdsList = () => {
 				onSortChange={handleSortChange}
 			/>
 
-			<Box
-				sx={{
-					display: 'flex',
-					gap: 4,
-					flexDirection: { xs: 'column', md: 'row' }
-				}}
-			>
-				<Box sx={{ width: { xs: '100%', md: 280 }, flexShrink: 0 }}>
+			<Box sx={styles.layoutSx}>
+				<Box sx={styles.filtersColumnSx}>
 					<Filters
 						selectedCategories={selectedCategories}
 						onChangeCategories={handleCategoriesChange}
@@ -118,22 +114,15 @@ export const AdsList = () => {
 					/>
 				</Box>
 
-				<Box
-					sx={{
-						flexGrow: 1,
-						display: 'flex',
-						flexDirection: 'column',
-						minWidth: 0
-					}}
-				>
+				<Box sx={styles.contentColumnSx}>
 					{isLoading && (
-						<Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+						<Box sx={styles.loadingSx}>
 							<CircularProgress />
 						</Box>
 					)}
 
 					{isError && (
-						<Box sx={{ textAlign: 'center', py: 8 }}>
+						<Box sx={styles.errorSx}>
 							<Typography color='error' gutterBottom>
 								Произошла ошибка при загрузке данных.
 							</Typography>
@@ -146,28 +135,13 @@ export const AdsList = () => {
 					{!isLoading && !isError && data?.items && (
 						<>
 							{isEmpty ? (
-								<Box sx={{ textAlign: 'center', py: 8 }}>
+								<Box sx={styles.emptySx}>
 									<Typography variant='h6' color='text.secondary'>
 										По вашему запросу ничего не найдено
 									</Typography>
 								</Box>
 							) : (
-								<Box
-									sx={{
-										display: 'grid',
-										gridTemplateColumns:
-											view === 'grid'
-												? {
-														xs: '1fr',
-														sm: 'repeat(2, 1fr)',
-														md: 'repeat(3, 1fr)',
-														lg: 'repeat(4, 1fr)',
-														xl: 'repeat(5, 1fr)'
-													}
-												: '1fr',
-										gap: 3
-									}}
-								>
+								<Box sx={styles.cardsGridSx(isGridView)}>
 									{data.items.map(ad => (
 										<AdCard key={ad.id} {...ad} view={view} />
 									))}
@@ -177,7 +151,7 @@ export const AdsList = () => {
 					)}
 
 					{totalPages > 1 && (
-						<Box sx={{ mt: 6, display: 'flex', justifyContent: 'flex-start' }}>
+						<Box sx={styles.paginationWrapSx}>
 							<Pagination
 								count={totalPages}
 								page={page}
