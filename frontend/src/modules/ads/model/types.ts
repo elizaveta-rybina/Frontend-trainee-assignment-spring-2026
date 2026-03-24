@@ -39,6 +39,7 @@ export type AdDetails = {
 
 // return /items
 export interface AdListItem {
+	id: number
 	category: ItemCategory
 	title: string
 	price: number | null
