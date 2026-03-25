@@ -34,9 +34,18 @@ export const useUpdateAd = (id: number) => {
 
 	return useMutation({
 		mutationFn: (payload: UpdateAdPayload) => adsApi.updateAd(id, payload),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: adsKeys.detail(id) })
-			queryClient.invalidateQueries({ queryKey: adsKeys.lists() })
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: adsKeys.detail(id) })
+			await queryClient.invalidateQueries({ queryKey: adsKeys.lists() })
+
+			await queryClient.refetchQueries({
+				queryKey: adsKeys.detail(id),
+				type: 'all'
+			})
+			await queryClient.refetchQueries({
+				queryKey: adsKeys.lists(),
+				type: 'all'
+			})
 		}
 	})
 }
