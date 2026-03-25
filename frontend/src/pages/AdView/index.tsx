@@ -135,7 +135,7 @@ export const AdView = () => {
 	const paramsRecord = ad.params as Record<string, ParamValue>
 
 	return (
-		<Container maxWidth='lg' sx={styles.pageSx}>
+		<Container maxWidth='xl' sx={styles.pageSx}>
 			<Button
 				component={Link}
 				to='/ads'
