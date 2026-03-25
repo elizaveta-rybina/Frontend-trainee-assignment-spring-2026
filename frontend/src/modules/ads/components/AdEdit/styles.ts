@@ -343,3 +343,25 @@ export const refineSelectBorderSx: SxProps<Theme> = {
 		borderColor: '#FFA940 !important'
 	}
 }
+
+export const requiredInputErrorBorderSx: SxProps<Theme> = {
+	'& .MuiOutlinedInput-notchedOutline': {
+		borderColor: '#EC221F !important'
+	},
+	'&:hover .MuiOutlinedInput-notchedOutline': {
+		borderColor: '#EC221F !important'
+	},
+	'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+		borderColor: '#EC221F !important'
+	}
+}
+
+export const requiredFieldErrorTextSx: SxProps<Theme> = {
+	mt: '4px',
+	fontFamily: 'Roboto, sans-serif',
+	fontWeight: 400,
+	fontSize: '12px',
+	lineHeight: '20px',
+	letterSpacing: '0',
+	color: '#EC221F'
+}

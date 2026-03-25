@@ -14,7 +14,7 @@ import {
 	Typography
 } from '@mui/material'
 
-import type { AIState, AdEditFormData } from '@/pages/AdEdit/types'
+import type { AIState, AdEditFormData } from '@/pages/AdEdit/model/types'
 
 import { PriceAiRequestButton } from '@/modules/ads/components/AdEdit/PriceAiRequestButton'
 import * as styles from './styles'
@@ -81,7 +81,7 @@ export const BasicFieldsSection = ({
 			<Box>
 				<Typography
 					variant='subtitle2'
-					color={isTitleMissing ? 'error' : 'textPrimary'}
+					color='textPrimary'
 					sx={styles.fieldLabelSx}
 				>
 					{renderRequiredLabel('Название')}
@@ -92,7 +92,7 @@ export const BasicFieldsSection = ({
 						isTitleMissing
 							? ([
 									styles.textInputSx,
-									styles.refineInputBorderSx
+									styles.requiredInputErrorBorderSx
 								] as SxProps<Theme>)
 							: styles.textInputSx
 					}
@@ -113,6 +113,11 @@ export const BasicFieldsSection = ({
 						)
 					}}
 				/>
+				{isTitleMissing && (
+					<Typography sx={styles.requiredFieldErrorTextSx}>
+						Название должно быть заполнено
+					</Typography>
+				)}
 			</Box>
 
 			<Box sx={styles.sectionDividerSx} />
@@ -120,7 +125,7 @@ export const BasicFieldsSection = ({
 			<Box>
 				<Typography
 					variant='subtitle2'
-					color={isPriceMissing ? 'error' : 'textPrimary'}
+					color='textPrimary'
 					sx={styles.fieldLabelSx}
 				>
 					{renderRequiredLabel('Цена')}
@@ -133,7 +138,7 @@ export const BasicFieldsSection = ({
 							isPriceMissing
 								? ([
 										styles.textInputSx,
-										styles.refineInputBorderSx
+										styles.requiredInputErrorBorderSx
 									] as SxProps<Theme>)
 								: styles.textInputSx
 						}
@@ -166,82 +171,84 @@ export const BasicFieldsSection = ({
 						loadingLabel='Выполняется запрос'
 						repeatLabel='Повторить запрос'
 					/>
+				</Box>
+				{isPriceMissing && (
+					<Typography sx={styles.requiredFieldErrorTextSx}>
+						Цена должна быть заполнена
+					</Typography>
+				)}
 
-					<Popover
-						open={isPricePopoverOpen}
-						anchorEl={priceAi.anchorEl}
-						onClose={onPriceAiClose}
-						anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-						transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-						slotProps={{
-							paper: {
-								sx:
-									priceAi.status === 'error'
-										? styles.popoverErrorPaperSx
-										: styles.popoverDefaultPaperSx
-							}
-						}}
-					>
-						{priceAi.status === 'error' ? (
-							<>
-								<Typography
-									variant='subtitle2'
-									color='#cf1322'
-									fontWeight={600}
-									sx={{ mb: 1 }}
-								>
-									Произошла ошибка при запросе к AI
-								</Typography>
-								<Typography
-									variant='body2'
-									sx={{ mb: 2, color: 'text.primary' }}
-								>
-									Попробуйте повторить запрос или закройте уведомление
-								</Typography>
+				<Popover
+					open={isPricePopoverOpen}
+					anchorEl={priceAi.anchorEl}
+					onClose={onPriceAiClose}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+					transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+					slotProps={{
+						paper: {
+							sx:
+								priceAi.status === 'error'
+									? styles.popoverErrorPaperSx
+									: styles.popoverDefaultPaperSx
+						}
+					}}
+				>
+					{priceAi.status === 'error' ? (
+						<>
+							<Typography
+								variant='subtitle2'
+								color='#cf1322'
+								fontWeight={600}
+								sx={{ mb: 1 }}
+							>
+								Произошла ошибка при запросе к AI
+							</Typography>
+							<Typography variant='body2' sx={{ mb: 2, color: 'text.primary' }}>
+								Попробуйте повторить запрос или закройте уведомление
+							</Typography>
+							<Button
+								variant='contained'
+								size='small'
+								onClick={onPriceAiClose}
+								sx={styles.popoverCloseButtonSx}
+							>
+								Закрыть
+							</Button>
+						</>
+					) : (
+						<>
+							<Typography variant='subtitle2' fontWeight={600} sx={{ mb: 1 }}>
+								Ответ AI:
+							</Typography>
+							<Typography
+								variant='body2'
+								sx={{ mb: 2, whiteSpace: 'pre-wrap' }}
+							>
+								{priceAi.result}
+							</Typography>
+							<Box sx={{ display: 'flex', gap: 1 }}>
 								<Button
 									variant='contained'
+									color='primary'
+									size='small'
+									onClick={onPriceApply}
+									sx={styles.popoverApplyButtonSx}
+								>
+									Применить
+								</Button>
+								<Button
+									variant='outlined'
+									color='inherit'
 									size='small'
 									onClick={onPriceAiClose}
-									sx={styles.popoverCloseButtonSx}
+									sx={styles.popoverSecondaryButtonSx}
 								>
 									Закрыть
 								</Button>
-							</>
-						) : (
-							<>
-								<Typography variant='subtitle2' fontWeight={600} sx={{ mb: 1 }}>
-									Ответ AI:
-								</Typography>
-								<Typography
-									variant='body2'
-									sx={{ mb: 2, whiteSpace: 'pre-wrap' }}
-								>
-									{priceAi.result}
-								</Typography>
-								<Box sx={{ display: 'flex', gap: 1 }}>
-									<Button
-										variant='contained'
-										color='primary'
-										size='small'
-										onClick={onPriceApply}
-										sx={styles.popoverApplyButtonSx}
-									>
-										Применить
-									</Button>
-									<Button
-										variant='outlined'
-										color='inherit'
-										size='small'
-										onClick={onPriceAiClose}
-										sx={styles.popoverSecondaryButtonSx}
-									>
-										Закрыть
-									</Button>
-								</Box>
-							</>
-						)}
-					</Popover>
-				</Box>
+							</Box>
+						</>
+					)}
+				</Popover>
 			</Box>
 
 			<Box sx={styles.sectionDividerSx} />

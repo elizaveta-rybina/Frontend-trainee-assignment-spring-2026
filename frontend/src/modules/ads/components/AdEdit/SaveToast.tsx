@@ -1,6 +1,6 @@
 import { Alert, AlertTitle, Snackbar, Typography } from '@mui/material'
 
-import type { ToastState } from '../../../../pages/AdEdit/types'
+import type { ToastState } from '../../../../pages/AdEdit/model/types'
 
 type SaveToastProps = {
 	toast: ToastState

@@ -2,7 +2,7 @@ import type { SxProps, Theme } from '@mui/material'
 import { Box, Button, Popover, TextField, Typography } from '@mui/material'
 
 import { PriceAiRequestButton } from '@/modules/ads/components/AdEdit/PriceAiRequestButton'
-import type { AIState } from '@/pages/AdEdit/types'
+import type { AIState } from '@/pages/AdEdit/model/types'
 import * as styles from './styles'
 
 type DescriptionSectionProps = {

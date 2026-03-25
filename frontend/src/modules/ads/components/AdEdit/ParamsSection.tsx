@@ -12,7 +12,7 @@ import {
 	Typography
 } from '@mui/material'
 
-import type { AdEditFormData, FieldConfig } from '@/pages/AdEdit/types'
+import type { AdEditFormData, FieldConfig } from '@/pages/AdEdit/model/types'
 import * as styles from './styles'
 
 type ParamsSectionProps = {

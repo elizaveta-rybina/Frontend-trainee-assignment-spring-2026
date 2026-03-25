@@ -1,4 +1,4 @@
-import type { AIState } from '@/pages/AdEdit/types'
+import type { AIState } from '@/pages/AdEdit/model/types'
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import type { SxProps, Theme } from '@mui/material'
