@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
+import { Header } from '@/modules/shared/Header'
 import { AdEdit } from '@/pages/AdEdit'
 import { AdsList } from '@/pages/AdsList'
 import { AdView } from '@/pages/AdView'
@@ -8,6 +9,7 @@ import { NotFound } from '@/pages/NotFound'
 export const AppRouter = () => {
 	return (
 		<BrowserRouter>
+			<Header />
 			<Routes>
 				<Route path='/' element={<Navigate to='/ads' replace />} />
 				<Route path='/ads' element={<AdsList />} />
